@@ -1,0 +1,88 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Coach</title>
+
+    <link rel="stylesheet" href="{% static 'career/css/style.css' %}">
+
+</head>
+
+<body>
+
+    
+    <nav class="navbar">
+
+        <div class="logo">AI Career Coach</div>
+
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="#">About</a>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+
+                <form method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-logout-btn">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Get Started</a>
+            {% endif %}
+        </div>
+
+    </nav>
+
+
+    <main class="hero">
+
+        <h1>Welcome to AI Career Coach</h1>
+
+        <p>Your personal AI-powered career assistant.</p>
+
+        <h2>Build Your Career With AI</h2>
+
+        <p>
+            Analyze your resume, discover missing skills,
+            and prepare for your interviews with AI.
+        </p>
+
+        <a href="{% url 'upload_resume' %}">
+            <button>Analyze My Resume</button>
+        </a>
+
+    </main>
+
+    <section class="features">
+
+        <h2>What Can AI Career Coach Do?</h2>
+
+        <div class="feature-container">
+
+            <div class="feature-card">
+                <h3>Resume Analysis</h3>
+                <p>Upload your resume and get AI-powered feedback.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Skill Gap Analysis</h3>
+                <p>Discover missing skills based on your target job.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Interview Preparation</h3>
+                <p>Practice interview questions and improve your confidence.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+</body>
+</html>

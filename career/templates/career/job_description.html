@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Description | AI Career Coach</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'career/css/style.css' %}">
+</head>
+<body class="analysis-page">
+
+    <div class="analysis-container">
+
+        <h1>Job Description Matching</h1>
+
+        <p>Resume: {{ resume.candidate_name }}</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit">Submit Job Description</button>
+        </form>
+
+    </div>
+
+</body>
+</html>

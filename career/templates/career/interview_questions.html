@@ -1,0 +1,209 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Interview Practice | AI Career Coach</title>
+
+    <link rel="stylesheet" href="{% static 'career/css/style.css' %}?v=6">
+</head>
+
+<body class="analysis-page">
+
+    <!-- Navigation -->
+    <nav class="dashboard-navbar">
+
+        <h2>AI Career Coach</h2>
+
+        <div class="dashboard-nav-links">
+
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'resume_history' %}">Resume History</a>
+
+            <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="nav-logout-btn">Logout</button>
+            </form>
+
+        </div>
+
+    </nav>
+
+
+    <div class="analysis-container">
+
+        <!-- Page Heading -->
+        <h1>AI Interview Practice</h1>
+
+        <p>Practice your interview and improve your answers with AI-powered feedback.</p>
+
+
+        <!-- Interview Details -->
+        <div class="candidate-card">
+
+            <h2>Interview Details</h2>
+
+            <p>
+                <strong>Candidate:</strong>
+                {{ interview.resume.candidate_name }}
+            </p>
+
+            <p>
+                <strong>Target Job:</strong>
+                {{ interview.job_description.job_title }}
+            </p>
+
+        </div>
+
+
+        <!-- Generated Questions -->
+        <div class="ai-analysis interview-question-section">
+
+            <h2>Your Personalized Interview Questions</h2>
+
+            <p>Review these questions and practice answering them.</p>
+
+            <div class="question-content">
+                {{ interview.questions|linebreaks }}
+            </div>
+
+        </div>
+
+
+        <!-- Answer Submission -->
+        <div class="ai-analysis interview-form-section">
+
+            <h2>Practice Your Interview</h2>
+
+            <p>Choose a question and write your answer below.</p>
+
+            <form method="POST"
+                  action="{% url 'submit_interview_answer' interview.id %}">
+
+                {% csrf_token %}
+
+                <label for="question">
+                    Interview Question
+                </label>
+
+                <textarea
+                    id="question"
+                    name="question"
+                    rows="3"
+                    placeholder="Enter your interview question..."
+                    required></textarea>
+
+
+                <label for="candidate_answer">
+                    Your Answer
+                </label>
+
+                <textarea
+                    id="candidate_answer"
+                    name="candidate_answer"
+                    rows="7"
+                    placeholder="Type your interview answer here..."
+                    required></textarea>
+
+
+                <button type="submit" class="analysis-btn">
+                    Evaluate My Answer
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Previous Evaluations -->
+        <div class="evaluation-section">
+
+            <h2>Previous Answer Evaluations</h2>
+
+            {% for answer in interview.answers.all %}
+
+                <div class="ai-analysis evaluation-card">
+
+                    <h3>Interview Question</h3>
+
+                    <p>{{ answer.question }}</p>
+
+
+                    <h3>Your Answer</h3>
+
+                    <p>{{ answer.candidate_answer }}</p>
+
+
+                    <h3>AI Feedback</h3>
+
+                    <div class="analysis-result">
+                        {{ answer.ai_feedback|linebreaks }}
+                    </div>
+
+
+                    {% if answer.score != None %}
+
+                        <div class="score-card">
+
+                            <h2>Your Interview Score</h2>
+
+                            <h1>{{ answer.score }}/10</h1>
+
+                            {% if answer.score >= 8 %}
+
+                                <p>Excellent Performance!</p>
+
+                            {% elif answer.score >= 6 %}
+
+                                <p>Good Job! Keep Improving.</p>
+
+                            {% elif answer.score >= 4 %}
+
+                                <p>Average. More Practice Needed.</p>
+
+                            {% else %}
+
+                                <p>Keep Practicing. You Can Improve!</p>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% empty %}
+
+                <div class="ai-analysis">
+                    <p>No answers evaluated yet. Start practicing your interview!</p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Navigation -->
+        <div class="analysis-actions">
+
+            <a href="{% url 'resume_analysis' interview.resume.id %}">
+                Back to Resume Analysis
+            </a>
+
+            <a href="{% url 'dashboard' %}">
+                Go to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

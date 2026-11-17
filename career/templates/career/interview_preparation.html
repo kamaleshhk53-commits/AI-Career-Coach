@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interview Preparation</title>
+    <link rel="stylesheet" href="{% static 'career/css/style.css' %}">
+</head>
+
+<body class="analysis-page">
+
+    <div class="analysis-container">
+
+        <h1>AI Interview Preparation</h1>
+
+        <div class="candidate-card">
+            <h2>Candidate Details</h2>
+            <p><strong>Name:</strong> {{ resume.candidate_name }}</p>
+            <p><strong>Target Job:</strong> {{ job.job_title }}</p>
+        </div>
+
+        <div class="ai-analysis">
+            <h2>Prepare for Your Interview</h2>
+
+            <p>
+                Our AI will generate 15 interview questions based on
+                your resume and the selected job description.
+            </p>
+
+            <ul>
+                <li>Python technical questions</li>
+                <li>Django questions</li>
+                <li>SQL and database questions</li>
+                <li>Project-related questions</li>
+                <li>HR and behavioural questions</li>
+            </ul>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <button type="submit">
+                    Generate Interview Questions
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>
